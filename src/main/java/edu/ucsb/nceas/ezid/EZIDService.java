@@ -42,11 +42,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
@@ -94,14 +97,18 @@ public class EZIDService
     private static final int PUT = 2;
     private static final int POST = 3;
     private static final int DELETE = 4;
+    private static final int CONNECTIONS_PER_ROUTE = 8;
 
     private DefaultHttpClient httpclient = null;
     private BasicCookieStore cookieStore = null;
 
     protected static Log log = LogFactory.getLog(EZIDService.class);
 
+    /**
+     * Construct an EZIDService to be used to access EZID.
+     */
     public EZIDService() {
-        httpclient = new DefaultHttpClient();
+        httpclient = createThreadSafeClient();
         cookieStore = new BasicCookieStore();
         httpclient.setCookieStore(cookieStore);
     }    
@@ -274,6 +281,21 @@ public class EZIDService
         String deletedId = parseIdentifierResponse(responseMsg);
     }
     
+    /**
+     * Generate an HTTP Client for communicating with web services that is
+     * thread safe and can be used in the context of a multi-threaded application.
+     * @return DefaultHttpClient
+     */
+    private static DefaultHttpClient createThreadSafeClient()  {
+        DefaultHttpClient client = new DefaultHttpClient();
+        ClientConnectionManager mgr = client.getConnectionManager();
+        HttpParams params = client.getParams();
+        ThreadSafeClientConnManager connManager = new ThreadSafeClientConnManager(mgr.getSchemeRegistry());
+        connManager.setDefaultMaxPerRoute(CONNECTIONS_PER_ROUTE);
+        client = new DefaultHttpClient(connManager, params);
+        return client;
+    }
+
     /**
      * Send an HTTP request to the EZID service without a request body.
      * @param requestType the type of the service as an integer
