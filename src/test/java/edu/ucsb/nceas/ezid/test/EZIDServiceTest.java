@@ -142,7 +142,7 @@ public class EZIDServiceTest  {
     }
 
     /** Generate a timestamp for use in IDs. */
-    private static String generateTimeString()
+    public static String generateTimeString()
     {
         StringBuffer guid = new StringBuffer();
 
@@ -160,6 +160,8 @@ public class EZIDServiceTest  {
         guid.append(calendar.get(Calendar.MINUTE));
         guid.append(calendar.get(Calendar.SECOND));
         guid.append(calendar.get(Calendar.MILLISECOND));
+        double random = Math.random();
+        guid.append(random);
 
         return guid.toString();
     }
