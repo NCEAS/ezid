@@ -88,17 +88,19 @@ import org.apache.http.util.EntityUtils;
  */
 public class EZIDService 
 {
-    private static final String LOGIN_SERVICE = "https://n2t.net/ezid/login";
-    private static final String LOGOUT_SERVICE = "https://n2t.net/ezid/logout";
-    private static final String ID_SERVICE = "https://n2t.net/ezid/id";
-    private static final String MINT_SERVICE = "https://n2t.net/ezid/shoulder";
     
     private static final int GET = 1;
     private static final int PUT = 2;
     private static final int POST = 3;
     private static final int DELETE = 4;
     private static final int CONNECTIONS_PER_ROUTE = 8;
-
+    
+    private String serviceBaseUrl = "https://n2t.net/ezid/";
+    private String loginServiceEndpoint = null;
+    private String logoutServiceEndpoint = null;
+    private String idServiceEndpoint = null;
+    private String mintServiceEndpoint = null;
+    
     private DefaultHttpClient httpclient = null;
     private BasicCookieStore cookieStore = null;
 
@@ -106,12 +108,32 @@ public class EZIDService
 
     /**
      * Construct an EZIDService to be used to access EZID.
+     * @param serviceBaseUrl 
+     * 			Configure the service to use a specific EZID instance.
+     * 			In the past, EZID has made available a testing or staging server
+     * 			like http://n2t-stage.cdlib.org/ezid
      */
-    public EZIDService() {
+    public EZIDService(String baseUrl) {
         httpclient = createThreadSafeClient();
         cookieStore = new BasicCookieStore();
         httpclient.setCookieStore(cookieStore);
-    }    
+        
+        // use override if provided
+        if (baseUrl != null) {
+            serviceBaseUrl = baseUrl;
+        }
+        loginServiceEndpoint = serviceBaseUrl + "/login";
+        logoutServiceEndpoint = serviceBaseUrl + "/logout";
+        idServiceEndpoint = serviceBaseUrl + "/id";
+        mintServiceEndpoint = serviceBaseUrl + "/shoulder";
+    }
+    
+    /**
+     * Default EZID service constructor uses default service base URL
+     */
+    public EZIDService() {
+    	this(null);
+    }
         
     /**
      * Log into the EZID service using account credentials provided by EZID. The cookie
@@ -124,7 +146,7 @@ public class EZIDService
      */
     public void login(String username, String password) throws EZIDException {
         try {
-            URI serviceUri = new URI(LOGIN_SERVICE);
+            URI serviceUri = new URI(loginServiceEndpoint);
             HttpHost targetHost = new HttpHost(serviceUri.getHost(), serviceUri.getPort(), serviceUri.getScheme()); 
             httpclient.getCredentialsProvider().setCredentials(
                     new AuthScope(targetHost.getHostName(), targetHost.getPort()), 
@@ -147,7 +169,7 @@ public class EZIDService
             };
             byte[] body = null;
           
-            HttpGet httpget = new HttpGet(LOGIN_SERVICE);
+            HttpGet httpget = new HttpGet(loginServiceEndpoint);
             body = httpclient.execute(httpget, handler, localcontext);
             String message = new String(body);
             String msg = parseIdentifierResponse(message);
@@ -164,7 +186,7 @@ public class EZIDService
      * Log out of the EZID service, invalidating the current session.
      */
     public void logout() throws EZIDException {
-        String ezidEndpoint = LOGOUT_SERVICE;
+        String ezidEndpoint = logoutServiceEndpoint;
         byte[] response = sendRequest(GET, ezidEndpoint);
         String message = new String(response);
         String msg = parseIdentifierResponse(message);
@@ -189,7 +211,7 @@ public class EZIDService
      */
     public String createIdentifier(String identifier, HashMap<String, String> metadata) throws EZIDException {
         String newId = null;
-        String ezidEndpoint = ID_SERVICE + "/" + identifier;
+        String ezidEndpoint = idServiceEndpoint + "/" + identifier;
 
         String anvl = serializeAsANVL(metadata);
 
@@ -214,7 +236,7 @@ public class EZIDService
      * @throws EZIDException if an error occurs while minting the identifier
      */
     public String mintIdentifier(String shoulder, HashMap<String, String> metadata) throws EZIDException {
-            String ezidEndpoint = MINT_SERVICE + "/" + shoulder;
+            String ezidEndpoint = mintServiceEndpoint + "/" + shoulder;
             
             String anvl = serializeAsANVL(metadata);
 
@@ -233,7 +255,7 @@ public class EZIDService
      * @throws EZIDException if EZID produces an error during the service call
      */
     public HashMap<String, String> getMetadata(String identifier) throws EZIDException {
-        String ezidEndpoint = ID_SERVICE + "/" + identifier;
+        String ezidEndpoint = idServiceEndpoint + "/" + identifier;
         byte [] response = sendRequest(GET, ezidEndpoint);
         String anvl = new String(response);
         
@@ -256,7 +278,7 @@ public class EZIDService
      * @throws EZIDException if the EZID service returns an error on setting metadata
      */
     public void setMetadata(String identifier, HashMap<String, String> metadata) throws EZIDException {
-        String ezidEndpoint = ID_SERVICE + "/" + identifier;
+        String ezidEndpoint = idServiceEndpoint + "/" + identifier;
         
         String anvl = serializeAsANVL(metadata);
 
@@ -275,7 +297,7 @@ public class EZIDService
      * @throws EZIDException if the delete operation fails with an error from EZID
      */
     public void deleteIdentifier(String identifier) throws EZIDException {
-        String ezidEndpoint = ID_SERVICE + "/" + identifier;
+        String ezidEndpoint = idServiceEndpoint + "/" + identifier;
         byte[] response = sendRequest(DELETE, ezidEndpoint);
         String responseMsg = new String(response);
         String deletedId = parseIdentifierResponse(responseMsg);

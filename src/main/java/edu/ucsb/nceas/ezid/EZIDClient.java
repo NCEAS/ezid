@@ -46,9 +46,13 @@ public class EZIDClient  {
 
     protected static Log log = LogFactory.getLog(EZIDClient.class);
 
-    public EZIDClient() {
-        ezid = new EZIDService();
+    public EZIDClient(String baseURL) {
+        ezid = new EZIDService(baseURL);
         startExecutorLoop();
+    }
+    
+    public EZIDClient() {
+        this(null);
     }
         
     public boolean login(String username, String password) {
