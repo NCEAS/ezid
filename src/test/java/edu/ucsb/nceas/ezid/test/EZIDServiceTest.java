@@ -33,6 +33,9 @@ import org.junit.Test;
 
 import edu.ucsb.nceas.ezid.EZIDException;
 import edu.ucsb.nceas.ezid.EZIDService;
+import edu.ucsb.nceas.ezid.profile.DataCiteProfile;
+import edu.ucsb.nceas.ezid.profile.DublinCoreProfile;
+import edu.ucsb.nceas.ezid.profile.InternalProfile;
 
 /**
  * Integration tests for the EZID Service.
@@ -84,8 +87,8 @@ public class EZIDServiceTest  {
         String testId = null;
         try {
             HashMap<String, String> metadata = new HashMap<String, String>();
-            metadata.put("_target", "http://example.com/ezidExample/");
-            metadata.put("datacite.title", "Title of a test identified resource");
+            metadata.put(InternalProfile.TARGET.toString(), "http://example.com/ezidExample/");
+            metadata.put(DataCiteProfile.TITLE.toString(), "Title of a test identified resource");
             testId = ezid.mintIdentifier(DOISHOULDER, metadata);
         } catch (EZIDException e) {
             fail("Mint failed: " + e.getMessage());
@@ -95,7 +98,7 @@ public class EZIDServiceTest  {
     @Test
     public void setAndGetMetadata() {
         String testId = null;
-        String TITLEKEY = "dc.title";
+        String TITLEKEY = DublinCoreProfile.TITLE.toString();
         String TITLEVAL = "A Dublin Core resource title";
 
         try {            
@@ -133,7 +136,7 @@ public class EZIDServiceTest  {
         String timestamp = generateTimeString();
         try {
             HashMap<String, String> metadata = new HashMap<String, String>();
-            metadata.put("_status", "reserved");
+            metadata.put(InternalProfile.STATUS.toString(), "reserved");
             String newId = ezid.createIdentifier(ARKSHOULDER + "/" + "TEST" + "/" + timestamp, metadata);
             ezid.deleteIdentifier(newId);
         } catch (EZIDException e) {
