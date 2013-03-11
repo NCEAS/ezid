@@ -25,7 +25,7 @@ scholarly publishing that is provided by the California Digital Library.
 This software library, ezid, provides a Java class that encapsulates the
 EZID service to simplify writing client applications that use the EZID 
 service. ezid provides methods for authenticating against the EZID service and
-then managinfg identifiers.  Using the service requires an account with the
+then managing identifiers.  Using the service requires an account with the
 EZID service.  For more information, see:
    http://n2t.net/ezid/doc/apidoc.html
 
