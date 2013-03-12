@@ -19,6 +19,10 @@ package edu.ucsb.nceas.ezid.profile;
  * X	_status		The identifier's status (see Identifier status above).	unavailable | withdrawn by author
  * X	_export		Determines if the identifier is publicized by exporting it to external indexing and harvesting services. Must be "yes" or "no"; defaults to "yes".	yes
  * 
+ * Service results are also included in this enumeration:
+ * SUCCESS	success
+ * ERROR	error
+ * 
  * EZID internal profile metadata fields
  */
 public enum InternalProfile {
@@ -32,7 +36,9 @@ public enum InternalProfile {
 	SHADOWED_BY("_shadowedby"),
 	PROFILE("_profile"),
 	STATUS("_status"),
-	EXPORT("_export");
+	EXPORT("_export"),
+	ERROR("error"),
+	SUCCESS("success");
 	
     private final String value;
 

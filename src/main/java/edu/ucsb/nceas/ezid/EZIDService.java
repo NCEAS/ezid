@@ -53,6 +53,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
+import edu.ucsb.nceas.ezid.profile.InternalProfile;
+
 /**
  * EZIDService provides access to the EZID identifier service maintained by the
  * California Digital Library (<a href="http://n2t.net/ezid/doc/apidoc.html">EZID</a>). 
@@ -262,7 +264,13 @@ public class EZIDService
         HashMap<String, String> metadata = new HashMap<String, String>();
         for (String l : anvl.split("[\\r\\n]+")) {
           String[] kv = l.split(":", 2);
-          metadata.put(unescape(kv[0]).trim(), unescape(kv[1]).trim());
+          String key = unescape(kv[0]).trim();
+          String value = unescape(kv[1]).trim();
+          // report the error
+          if (key.equals(InternalProfile.ERROR.toString())) {
+        	  throw new EZIDException(value);
+          }
+          metadata.put(key, value);
         }
         return metadata;
     }
@@ -406,7 +414,7 @@ public class EZIDService
         String newId;
         String[] responseArray = responseMsg.split(":", 2);
         String resultCode = unescape(responseArray[0]).trim();
-        if (resultCode.equals("success")) {
+        if (resultCode.equals(InternalProfile.SUCCESS.toString())) {
             String idList[] = (unescape(responseArray[1]).trim()).split("\\|");
             newId = idList[0].trim();
             return newId;
