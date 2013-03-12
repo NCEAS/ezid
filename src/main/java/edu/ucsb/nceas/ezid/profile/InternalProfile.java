@@ -18,6 +18,11 @@ package edu.ucsb.nceas.ezid.profile;
  * X	_profile	The identifier's preferred metadata profile (see Metadata profiles next).	erc
  * X	_status		The identifier's status (see Identifier status above).	unavailable | withdrawn by author
  * X	_export		Determines if the identifier is publicized by exporting it to external indexing and harvesting services. Must be "yes" or "no"; defaults to "yes".	yes
+
+ * _status options are
+ * PUBLIC		public (default)
+ * RESERVED		reserved
+ * UNAVAILABLE	unavailable
  * 
  * Service results are also included in this enumeration:
  * SUCCESS	success
@@ -35,8 +40,16 @@ public enum InternalProfile {
 	SHADOWS("_shadows"),
 	SHADOWED_BY("_shadowedby"),
 	PROFILE("_profile"),
-	STATUS("_status"),
 	EXPORT("_export"),
+	// values for _export
+	YES("yes"),
+	NO("no"),
+	STATUS("_status"),
+	// values for _status
+	PUBLIC("public"),
+	RESERVED("reserved"),
+	UNAVAILABLE("unavailable"),
+	// API return fields
 	ERROR("error"),
 	SUCCESS("success");
 	
