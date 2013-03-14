@@ -12,7 +12,9 @@ public enum DataCiteProfile {
 	TITLE("title"),
 	PUBLISHER("publisher"), 
 	PUBLICATION_YEAR("publicationyear"), 
-	RESOURCE_TYPE("resourcetype");
+	RESOURCE_TYPE("resourcetype"),
+	FORMAT("format"),
+	SIZE("size");
 	
 	private static final String profileName = "datacite";
 	
