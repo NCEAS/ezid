@@ -2,7 +2,7 @@ package edu.ucsb.nceas.ezid.profile;
 
 /**
  * EZID profile for internal metadata fields
- * @see http://n2t.net/ezid/doc/apidoc.html#internal-metadata
+ * @see http://ezid.cdlib.org/doc/apidoc.html#internal-metadata
  * @author leinfelder
  * 
  * The internal elements, those marked with [X] are modifiable by clients.
@@ -12,7 +12,7 @@ package edu.ucsb.nceas.ezid.profile;
  * X	_coowners	The identifier's co-owners separated by semicolons (";", U+003B). Modifiable only by the identifier's owner.	manny ; moe ; jack
  *		_created	The time the identifier was created expressed as a Unix timestamp.	1300812337
  *		_updated	The time the identifier was last modified expressed as a Unix timestamp.	1300913550
- * X	_target		The identifier's target URL. Defaults to the identifier's EZID URL. That is, the default target URL for identifier foo is the self-referential URL http://n2t.net/ezid/id/foo.
+ * X	_target		The identifier's target URL. Defaults to the identifier's EZID URL. That is, the default target URL for identifier foo is the self-referential URL http://ezid.cdlib.org/id/foo.
  * 		_shadows	Shadow ARKs only. The shadowed identifier.	doi:10.9999/TEST
  *		_shadowedby	Shadowed identifiers only. The identifier's shadow ARK.	ark:/b9999/test
  * X	_profile	The identifier's preferred metadata profile (see Metadata profiles next).	erc

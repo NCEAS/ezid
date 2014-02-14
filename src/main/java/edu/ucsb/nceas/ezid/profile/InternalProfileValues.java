@@ -2,7 +2,7 @@ package edu.ucsb.nceas.ezid.profile;
 
 /**
  * EZID profile for internal metadata field values
- * @see http://n2t.net/ezid/doc/apidoc.html#internal-metadata
+ * @see http://ezid.cdlib.org/doc/apidoc.html#internal-metadata
  * @author leinfelder
  * 
  * _export values:

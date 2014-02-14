@@ -57,7 +57,7 @@ import edu.ucsb.nceas.ezid.profile.InternalProfile;
 
 /**
  * EZIDService provides access to the EZID identifier service maintained by the
- * California Digital Library (<a href="http://n2t.net/ezid/doc/apidoc.html">EZID</a>). 
+ * California Digital Library (<a href="http://ezid.cdlib.org/doc/apidoc.html">EZID</a>). 
  * The service includes methods for creating identifiers using several different 
  * standards such as DOI, ARK, and others.  To use the service, you must have an 
  * account with the EZID service, which is first used to login to the service.  Once 
@@ -97,7 +97,7 @@ public class EZIDService
     private static final int DELETE = 4;
     private static final int CONNECTIONS_PER_ROUTE = 8;
     
-    private String serviceBaseUrl = "https://n2t.net/ezid/";
+    private String serviceBaseUrl = "https://ezid.cdlib.org/";
     private String loginServiceEndpoint = null;
     private String logoutServiceEndpoint = null;
     private String idServiceEndpoint = null;

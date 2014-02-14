@@ -2,7 +2,7 @@ package edu.ucsb.nceas.ezid.profile;
 
 /**
  * EZID profile for ERC metadata
- * @see http://n2t.net/ezid/doc/apidoc.html#profile-erc
+ * @see http://ezid.cdlib.org/doc/apidoc.html#profile-erc
  * @author leinfelder
  * 
  */

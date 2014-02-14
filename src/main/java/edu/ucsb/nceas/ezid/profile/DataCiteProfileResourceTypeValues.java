@@ -2,7 +2,7 @@ package edu.ucsb.nceas.ezid.profile;
 
 /**
  * Values for EZID DataCite profile resourcetype
- * @see http://n2t.net/ezid/doc/apidoc.html#profile-datacite
+ * @see http://ezid.cdlib.org/doc/apidoc.html#profile-datacite
  * @author leinfelder
  *
  */

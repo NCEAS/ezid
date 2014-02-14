@@ -3,7 +3,7 @@ package edu.ucsb.nceas.ezid.profile;
 /**
  * EZID missing value codes specified by the ERC metadata profile.
  * These should be used when values are not supplied for a known reason.
- * @see http://n2t.net/ezid/doc/apidoc.html#metadata-requirements-mapping
+ * @see http://ezid.cdlib.org/doc/apidoc.html#metadata-requirements-mapping
  * @author leinfelder
  * 
  * ERC missing value codes
