@@ -21,6 +21,9 @@ package edu.ucsb.nceas.ezid.test;
 
 import static org.junit.Assert.fail;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -47,6 +50,8 @@ public class EZIDServiceTest  {
     private static final String DOISHOULDER = "doi:10.5072/FK2";
     private static final String ARKSHOULDER = "ark:/99999/fk4";
     private static EZIDService ezid = null;
+
+    protected static Log log = LogFactory.getLog(EZIDServiceTest.class);
 
     @Before
     public void setUp() throws EZIDException {
@@ -86,7 +91,7 @@ public class EZIDServiceTest  {
     public void mint() {
         String testId = null;
         try {
-            HashMap<String, String> metadata = new HashMap<String, String>();
+            HashMap<String, String> metadata = generateMetadata("ToBeMinted");
             metadata.put(InternalProfile.TARGET.toString(), "http://example.com/ezidExample/");
             metadata.put(DataCiteProfile.TITLE.toString(), "Title of a test identified resource");
             testId = ezid.mintIdentifier(DOISHOULDER, metadata);
@@ -102,8 +107,8 @@ public class EZIDServiceTest  {
         String TITLEVAL = "A Dublin Core resource title";
 
         try {            
-            testId = ezid.mintIdentifier(DOISHOULDER, null);
-            HashMap<String, String> metadata = new HashMap<String, String>();
+            HashMap<String, String> metadata = generateMetadata("ToBeMinted");
+            testId = ezid.mintIdentifier(DOISHOULDER, metadata);
             metadata.put(TITLEKEY, TITLEVAL);
             ezid.setMetadata(testId, metadata);
         } catch (EZIDException e) {
@@ -112,7 +117,11 @@ public class EZIDServiceTest  {
         
         try {
             HashMap<String, String> metadata = ezid.getMetadata(testId);
+			for (String key : metadata.keySet()) {
+			    log.debug(key + ": " + metadata.get(key));
+			}
             String title = metadata.get(TITLEKEY);
+			log.debug("SetAndGet Title: " + title);
             if (title == null || !title.equals(TITLEVAL)) {
                 fail("GetMetadata failed: Title does not match.");
             }
@@ -125,12 +134,14 @@ public class EZIDServiceTest  {
     public void create() {
         String timestamp = generateTimeString();
         try {
-            String newId = ezid.createIdentifier(DOISHOULDER + "/" + "TEST" + "/" + timestamp, null);
+            String identifier = DOISHOULDER + "/" + "TEST" + "/" + timestamp;
+            HashMap metadata = generateMetadata(identifier);
+            String newId = ezid.createIdentifier(identifier, metadata);
         } catch (EZIDException e) {
             fail("Create failed: " + e.getMessage());
         }
     }
-    
+   
     @Test
     public void delete() {
         String timestamp = generateTimeString();
@@ -169,4 +180,19 @@ public class EZIDServiceTest  {
         return guid.toString();
     }
 
+    /**
+     * Generate DataCite compliant metadata for use in test data insertion.
+     */
+    private HashMap<String, String> generateMetadata(String identifier) {
+        HashMap<String, String> metadata = new HashMap<String, String>();
+        String title = "Test entry from ezid service for identifier: " + identifier;
+        metadata.put("datacite.title", title);
+        String creator = "Keyser Söze";
+        metadata.put("datacite.creator", creator);
+        String publisher = "EZID Java Library";
+        metadata.put("datacite.publisher", publisher);
+        String year = new Integer(Calendar.getInstance().get(Calendar.YEAR)).toString();
+        metadata.put("datacite.publicationyear", year);
+        return metadata;
+    }
 }
