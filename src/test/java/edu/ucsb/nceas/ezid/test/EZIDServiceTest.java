@@ -183,7 +183,7 @@ public class EZIDServiceTest  {
     /**
      * Generate DataCite compliant metadata for use in test data insertion.
      */
-    private HashMap<String, String> generateMetadata(String identifier) {
+    public static HashMap<String, String> generateMetadata(String identifier) {
         HashMap<String, String> metadata = new HashMap<String, String>();
         String title = "Test entry from ezid service for identifier: " + identifier;
         metadata.put("datacite.title", title);

@@ -30,16 +30,8 @@ public class EZIDClientTest {
         assertTrue(success);
         for (int i = 0; i < 100; i ++) {
             String timestamp = EZIDServiceTest.generateTimeString();
-            HashMap<String, String> metadata = new HashMap<String, String>();
             String identifier = DOISHOULDER + "/" + "TEST" + "/" + timestamp;
-            String title = "Test entry from ezid client for identifier: " + identifier;
-            metadata.put("datacite.title", title);
-            String creator = "Keyser Söze";
-            metadata.put("datacite.creator", creator);
-            String publisher = "EZID Java Library";
-            metadata.put("datacite.publisher", publisher);
-            String year = new Integer(Calendar.getInstance().get(Calendar.YEAR)).toString();
-            metadata.put("datacite.publicationyear", year);
+            HashMap<String, String> metadata = EZIDServiceTest.generateMetadata(identifier);
             log.debug("Identifier under test: " + identifier);
             try {
                 client.create(identifier, metadata);
