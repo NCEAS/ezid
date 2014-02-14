@@ -2,7 +2,7 @@
   This work was created by the National Center for Ecological Analysis and
   Synthesis at the University of California Santa Barbara (UCSB).
  
-    Copyright 2011 Regents of the University of California
+    Copyright 2011-2014 Regents of the University of California
  
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.

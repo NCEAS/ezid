@@ -8,7 +8,7 @@ EZID service to simplify writing client applications that use the EZID
 service. ezid provides methods for authenticating against the EZID service and
 then managing identifiers.  Using the service requires an account with the
 EZID service.  For more information, see:
-   http://n2t.net/ezid/doc/apidoc.html
+   http://ezid.cdlib.org/doc/apidoc.html
 
 See the javadoc documentation for an overview of usage, as well as the
 EZIDServiceTest.java JUnit class for examples of usage.
@@ -27,7 +27,7 @@ and then run:
 
   $ mvn package
 
-which will create the jar file in the target directory. The jar file then be
+which will create the jar file in the target directory. The jar file can then be
 included in applications that wish to access EZID.
 
 Contact us: knb-help@nceas.ucsb.edu
@@ -38,7 +38,7 @@ License
 This work was created by the National Center for Ecological Analysis and
 Synthesis at the University of California Santa Barbara (UCSB).
  
-  Copyright 2011 Regents of the University of California
+  Copyright 2011-2104 Regents of the University of California
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
