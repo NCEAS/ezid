@@ -4,19 +4,19 @@
 
   <groupId>edu.ucsb.nceas</groupId>
   <artifactId>ezid</artifactId>
-  <version>0.9.0</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>ezid</name>
   <description>Utility library for accessing the EZID service for creation and management of unique identifiers.</description>
-  <url>http://nceas.ucsb.edu</url>
+  <url>https://github.com/mbjones/ezid</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <scm>
-  	<url>https://code.ecoinformatics.org/code/ezid</url>
+  	<url>https://github.com/mbjones/ezid.git</url>
   </scm>
   <organization>
   	<name>National Center for Ecological Analysis and Synthesis, UC Santa Barbara</name>
