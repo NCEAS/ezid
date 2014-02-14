@@ -23,12 +23,13 @@ public class EZIDClientTest {
 
     @Test
     public void testCreate() {
-        log.debug("Starting test...");
+		int numTests = 100;
+        log.info("Testing asynchronous id creation with " + numTests + " tests. Please be patient...");
         EZIDClient client = new EZIDClient();
         assertNotNull(client);
         boolean success = client.login(USERNAME, PASSWORD);
         assertTrue(success);
-        for (int i = 0; i < 100; i ++) {
+        for (int i = 0; i < numTests; i ++) {
             String timestamp = EZIDServiceTest.generateTimeString();
             String identifier = DOISHOULDER + "/" + "TEST" + "/" + timestamp;
             HashMap<String, String> metadata = EZIDServiceTest.generateMetadata(identifier);

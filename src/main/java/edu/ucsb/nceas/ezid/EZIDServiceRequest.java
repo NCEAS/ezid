@@ -68,24 +68,24 @@ public class EZIDServiceRequest implements Runnable
     }
 
     public void run() {
-        log.info("Service to execute: " + method + "/" + identifier + "/" + metadata);
+        log.debug("Service to execute: " + method + "/" + identifier + "/" + metadata);
         try {
             switch (method) {
             case CREATE:
                 String newID = ezid.createIdentifier(identifier, metadata);
-                log.info("Completed CREATE request for: " + identifier);
+                log.debug("Completed CREATE request for: " + identifier);
                 break;
             case SETMETADATA:
                 ezid.setMetadata(identifier, metadata);
-                log.info("Completed SETMETADATA request for: " + identifier);
+                log.debug("Completed SETMETADATA request for: " + identifier);
                 break;
             case DELETE:
                 ezid.deleteIdentifier(identifier);
-                log.info("Completed DELETE request for: " + identifier);
+                log.debug("Completed DELETE request for: " + identifier);
                 break;
             }
         } catch (EZIDException e) {
-            log.info("FAILED Request " + method + " for: " + identifier + ". " + e.getMessage());
+            log.error("FAILED Request " + method + " for: " + identifier + ". " + e.getMessage());
         }
     }
     

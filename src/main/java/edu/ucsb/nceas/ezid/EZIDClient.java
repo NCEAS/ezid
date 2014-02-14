@@ -88,17 +88,17 @@ public class EZIDClient  {
         // Query the runtime to see how many CPUs are available, and configure that many threads
         Runtime runtime = Runtime.getRuntime();        
         int numCores = runtime.availableProcessors();
-        log.info("Number of cores available: " + numCores);
+        log.debug("Number of cores available: " + numCores);
         executor = Executors.newFixedThreadPool(numCores);
     }
     
     public void shutdown() {
-        log.info("Shutting down executor...");
+        log.debug("Shutting down executor...");
         // Stop the executor from accepting new requests and finishing existing Runnables
         executor.shutdown();
         // Wait until all Runnables are finished
         while (!executor.isTerminated()) {
-//            log.info("...");
+//            log.debug("...");
         }
     }
 }
