@@ -1,13 +1,13 @@
 EZID Service Library
 ====================
 
-EZID is a service for creating and managing unique identifiers for use in
-scholarly publishing that is provided by the California Digital Library.
-This software library, ezid, provides a Java class that encapsulates the
-EZID service to simplify writing client applications that use the EZID 
-service. ezid provides methods for authenticating against the EZID service and
-then managing identifiers.  Using the service requires an account with the
-EZID service.  For more information, see:
+[EZID](http://ezid.cdlib.org) is a service for creating and managing unique
+identifiers for use in scholarly publishing that is provided by the California
+Digital Library.  This software library, ezid, provides a Java class that
+encapsulates the EZID service to simplify writing client applications that use
+the EZID service. ezid provides methods for authenticating against the EZID
+service and then managing identifiers.  Using the service requires an account
+with the EZID service.  For more information, see:
    http://ezid.cdlib.org/doc/apidoc.html
 
 See the javadoc documentation for an overview of usage, as well as the
@@ -17,8 +17,8 @@ See the License section below and LICENSE.txt for the details of distributing th
 
 Contributors
 ------------
-* Matthew B. Jones, NCEAS
-* Ben Leinfelder, NCEAS
+* [Matthew B. Jones](http://matt.magisa.org), [NCEAS](http://www.nceas.ucsb.edu)
+* Ben Leinfelder, [NCEAS](http://www.nceas.ucsb.edu)
 
 Using the library
 -----------------
