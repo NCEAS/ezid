@@ -20,6 +20,39 @@ Contributors
 * Matthew B. Jones, NCEAS
 * Ben Leinfelder, NCEAS
 
+Using the library
+-----------------
+To use the library in your Java application, you can add it to your pom.xml
+configuration if you are using Maven.  You can access the ezid jar files through
+Maven by adding the appropriate maven repository to your pom.  Something like
+this snippet should work:
+
+```xml
+    ...
+    <repositories>
+        <repository>
+            <id>dataone.org</id>
+            <url>http://dev-testing.dataone.org/maven</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <dependencies>
+    	<dependency>
+    		<groupId>edu.ucsb.nceas</groupId>
+			<artifactId>ezid</artifactId>
+			<version>1.0.0</version>
+			<type>jar</type>
+    	</dependency>
+    </dependencies>
+```
+
+We plan to publish the ezid artifacts to Maven Central repositories, but have not gotten there yet.
+
 Building the library
 --------------------
 The library is a standard Maven2 project.  To build the library, install Maven2, 
@@ -31,6 +64,14 @@ which will create the jar file in the target directory. The jar file can then be
 included in applications that wish to access EZID.
 
 Contact us: knb-help@nceas.ucsb.edu
+
+Contributions
+-------------
+We welcome contributions to the project, and will incorporate pull requests after code review as long as the code requests are licensed acceptably and provide improvements that would generally be useful to the community of EZID users.  Please submit pull request via GitHub.
+
+Issue Tracking
+--------------
+Bugs, new features, and comments on the EZID library are handled through the [ezid issue tracker](https://github.com/mbjones/ezid/issues?state=open "ezid issues").  
 
 License
 -------
