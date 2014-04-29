@@ -4,7 +4,7 @@
 
   <groupId>edu.ucsb.nceas</groupId>
   <artifactId>ezid</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>ezid</name>
@@ -26,7 +26,7 @@
     <dependency>
     	<groupId>org.apache.httpcomponents</groupId>
     	<artifactId>httpclient</artifactId>
-    	<version>4.1.2</version>
+    	<version>4.2.3</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>
