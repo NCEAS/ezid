@@ -84,6 +84,24 @@ public class EZIDClient  {
 
     }
     
+    public void createOrUpdate(String identifier, HashMap<String, String> metadata) throws InterruptedException {
+        EZIDServiceRequest request = new EZIDServiceRequest(ezid, EZIDServiceRequest.SMARTCREATE, identifier, metadata);
+        executor.execute(request);
+
+    }
+
+    /**
+     * Note: unlike the other methods in this class, the thread blocks until the identifier is returned
+     * @param shoulder
+     * @param metadata
+     * @return
+     * @throws EZIDException
+     */
+    public String mintIdentifier(String shoulder, HashMap<String, String> metadata) throws EZIDException {
+        String identifier = ezid.mintIdentifier(shoulder, metadata);
+        return identifier;
+    }
+    
     private void startExecutorLoop() {
         // Query the runtime to see how many CPUs are available, and configure that many threads
         Runtime runtime = Runtime.getRuntime();        

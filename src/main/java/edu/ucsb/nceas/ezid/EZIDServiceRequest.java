@@ -39,6 +39,7 @@ public class EZIDServiceRequest implements Runnable
     public static final int CREATE = 1;
     public static final int SETMETADATA = 2;
     public static final int DELETE = 3;
+    public static final int SMARTCREATE = 4;
 
     private EZIDService ezid = null;
     private int method;
@@ -51,7 +52,7 @@ public class EZIDServiceRequest implements Runnable
         if (ezid == null) {
             throw new IllegalArgumentException("EZIDService argument must not be null.");
         }
-        if (method < 1 || method > 3) {
+        if (method < 1 || method > 4) {
             throw new IllegalArgumentException("Service must be an interger value between 1 and 4.");
         }
         if (identifier == null) {
@@ -83,7 +84,21 @@ public class EZIDServiceRequest implements Runnable
                 ezid.deleteIdentifier(identifier);
                 log.debug("Completed DELETE request for: " + identifier);
                 break;
-            }
+	        case SMARTCREATE:
+	            HashMap<String, String> existingMetadata = null;
+	            try {
+	            	existingMetadata = ezid.getMetadata(identifier);
+	            } catch (Exception e) {
+	            	// not there
+	            }
+	            if (existingMetadata == null) {
+	                ezid.createIdentifier(identifier, metadata);
+	            } else {
+	                ezid.setMetadata(identifier, metadata);
+	            }
+	            log.debug("Completed SMARTCREATE request for: " + identifier);
+	            break;
+	        }
         } catch (EZIDException e) {
             log.error("FAILED Request " + method + " for: " + identifier + ". " + e.getMessage());
         }
