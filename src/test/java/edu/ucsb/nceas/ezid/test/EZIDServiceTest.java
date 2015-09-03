@@ -46,7 +46,7 @@ import edu.ucsb.nceas.ezid.profile.InternalProfile;
  */
 public class EZIDServiceTest  {
     private static String USERNAME = "apitest";
-    private static String PASSWORD = "yourpasswordhere";
+    private static String PASSWORD = "apitest";
     private static final String DOISHOULDER = "doi:10.5072/FK2";
     private static final String ARKSHOULDER = "ark:/99999/fk4";
     private static EZIDService ezid = null;

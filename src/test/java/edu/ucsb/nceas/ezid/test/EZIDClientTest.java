@@ -16,7 +16,7 @@ import edu.ucsb.nceas.ezid.EZIDClient;
 public class EZIDClientTest {
 
     private static String USERNAME = "apitest";
-    private static String PASSWORD = "yourpasswordhere";
+    private static String PASSWORD = "apitest";
     private static final String DOISHOULDER = "doi:10.5072/FK2";
 
     protected static Log log = LogFactory.getLog(EZIDClientTest.class);
