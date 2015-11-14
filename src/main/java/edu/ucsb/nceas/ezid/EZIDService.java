@@ -113,7 +113,6 @@ public class EZIDService
     private String mintServiceEndpoint = null;
     
     private CloseableHttpClient httpclient = null;
-    private BasicCookieStore cookieStore = null;
 
     protected static Log log = LogFactory.getLog(EZIDService.class);
 
