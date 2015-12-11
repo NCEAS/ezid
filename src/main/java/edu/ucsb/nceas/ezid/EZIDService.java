@@ -35,6 +35,8 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -42,12 +44,19 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
@@ -103,8 +112,7 @@ public class EZIDService
     private String idServiceEndpoint = null;
     private String mintServiceEndpoint = null;
     
-    private DefaultHttpClient httpclient = null;
-    private BasicCookieStore cookieStore = null;
+    private CloseableHttpClient httpclient = null;
 
     protected static Log log = LogFactory.getLog(EZIDService.class);
 
@@ -117,8 +125,7 @@ public class EZIDService
      */
     public EZIDService(String baseUrl) {
         httpclient = createThreadSafeClient();
-        cookieStore = new BasicCookieStore();
-        httpclient.setCookieStore(cookieStore);
+
         
         // use override if provided
         if (baseUrl != null) {
@@ -150,14 +157,16 @@ public class EZIDService
         try {
             URI serviceUri = new URI(loginServiceEndpoint);
             HttpHost targetHost = new HttpHost(serviceUri.getHost(), serviceUri.getPort(), serviceUri.getScheme()); 
-            httpclient.getCredentialsProvider().setCredentials(
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider.setCredentials(
                     new AuthScope(targetHost.getHostName(), targetHost.getPort()), 
                     new UsernamePasswordCredentials(username, password));
             AuthCache authCache = new BasicAuthCache();
             BasicScheme basicAuth = new BasicScheme();
             authCache.put(targetHost, basicAuth);
-            BasicHttpContext localcontext = new BasicHttpContext();
-            localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);        
+            HttpClientContext localcontext = HttpClientContext.create();
+            localcontext.setAuthCache(authCache);  
+            localcontext.setCredentialsProvider(credsProvider);
             
             ResponseHandler<byte[]> handler = new ResponseHandler<byte[]>() {
                 public byte[] handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
@@ -316,13 +325,13 @@ public class EZIDService
      * thread safe and can be used in the context of a multi-threaded application.
      * @return DefaultHttpClient
      */
-    private static DefaultHttpClient createThreadSafeClient()  {
-        DefaultHttpClient client = new DefaultHttpClient();
-        ClientConnectionManager mgr = client.getConnectionManager();
-        HttpParams params = client.getParams();
-        ThreadSafeClientConnManager connManager = new ThreadSafeClientConnManager(mgr.getSchemeRegistry());
-        connManager.setDefaultMaxPerRoute(CONNECTIONS_PER_ROUTE);
-        client = new DefaultHttpClient(connManager, params);
+    private static CloseableHttpClient createThreadSafeClient()  {
+        BasicCookieStore cookieStore = new BasicCookieStore();
+        
+        PoolingHttpClientConnectionManager poolingConnManager = new PoolingHttpClientConnectionManager();
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(poolingConnManager).setDefaultCookieStore(cookieStore).build();
+        poolingConnManager.setMaxTotal(5);
+        poolingConnManager.setDefaultMaxPerRoute(CONNECTIONS_PER_ROUTE);
         return client;
     }
 
@@ -353,23 +362,15 @@ public class EZIDService
         case PUT:
             request = new HttpPut(uri);
             if (requestBody != null && requestBody.length() > 0) {
-                try {
-                    StringEntity myEntity = new StringEntity(requestBody, "UTF-8");
-                    ((HttpPut) request).setEntity(myEntity);
-                } catch (UnsupportedEncodingException e) {
-                    throw new EZIDException(e.getMessage());
-                }
+                StringEntity myEntity = new StringEntity(requestBody, "UTF-8");
+				((HttpPut) request).setEntity(myEntity);
             }
             break;
         case POST:
             request = new HttpPost(uri);
             if (requestBody != null && requestBody.length() > 0) {
-                try {
-                    StringEntity myEntity = new StringEntity(requestBody, "UTF-8");
-                    ((HttpPost) request).setEntity(myEntity);
-                } catch (UnsupportedEncodingException e) {
-                    throw new EZIDException(e.getMessage());
-                }
+                StringEntity myEntity = new StringEntity(requestBody, "UTF-8");
+				((HttpPost) request).setEntity(myEntity);
             }
             break;
         case DELETE:
