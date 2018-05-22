@@ -20,7 +20,6 @@
 package edu.ucsb.nceas.ezid;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -36,30 +35,21 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 
 import edu.ucsb.nceas.ezid.profile.InternalProfile;
@@ -329,7 +319,7 @@ public class EZIDService
         BasicCookieStore cookieStore = new BasicCookieStore();
         
         PoolingHttpClientConnectionManager poolingConnManager = new PoolingHttpClientConnectionManager();
-        CloseableHttpClient client = HttpClients.custom().setConnectionManager(poolingConnManager).setDefaultCookieStore(cookieStore).build();
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(poolingConnManager).setDefaultCookieStore(cookieStore).useSystemProperties().build();
         poolingConnManager.setMaxTotal(5);
         poolingConnManager.setDefaultMaxPerRoute(CONNECTIONS_PER_ROUTE);
         return client;
