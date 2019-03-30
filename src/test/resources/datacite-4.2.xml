@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<resource xmlns="http://datacite.org/schema/kernel-4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://datacite.org/schema/kernel-4 https://schema.datacite.org/meta/kernel-4.2/metadata.xsd">
+    <identifier identifierType="DOI">TBD</identifier>
+    <creators>
+        <creator>
+            <creatorName nameType="Organizational">United States Census Bureau</creatorName>
+        </creator>
+        <creator>
+            <creatorName nameType="Personal">Bachtel, Juliet</creatorName>
+            <givenName>Juliet</givenName>
+            <familyName>Bachtel</familyName>
+            <nameIdentifier schemeURI="http://orcid.org/" nameIdentifierScheme="ORCID">0000-0003-0003-2515</nameIdentifier>
+            <affiliation>National Center for Ecological Analysis and Synthesis</affiliation>
+        </creator>
+        <creator>
+            <creatorName nameType="Personal">Randazzo, John</creatorName>
+            <givenName>John</givenName>
+            <familyName>Randazzo</familyName>
+            <affiliation>National Center for Ecological Analysis and Synthesis</affiliation>
+        </creator>
+        <creator>
+            <creatorName nameType="Personal">Gavenus, Erika</creatorName>
+            <givenName>Erika</givenName>
+            <familyName>Gavenus</familyName>
+        </creator>
+    </creators>
+    <titles>
+        <title xml:lang="en">Critical Engineering Literacy Test (CELT)</title>
+    </titles>
+    <publisher>Purdue University Research Repository (PURR)</publisher>
+    <publicationYear>2013</publicationYear>
+    <subjects>
+        <subject xml:lang="en">Test</subject>
+    </subjects>
+    <language>en</language>
+    <resourceType resourceTypeGeneral="Dataset">Dataset</resourceType>
+    <version>1.0</version>
+    <descriptions>
+        <description xml:lang="en" descriptionType="Abstract">
+            This is a test abstract.
+        </description>
+    </descriptions>
+</resource>

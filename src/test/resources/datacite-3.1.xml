@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<resource xmlns="http://datacite.org/schema/kernel-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://datacite.org/schema/kernel-3 https://schema.datacite.org/meta/kernel-3.1/metadata.xsd">
+    <identifier identifierType="DOI">10.xxxx/yyyy</identifier>
+    <creators>
+        <creator>
+            <creatorName>United States Census Bureau</creatorName>
+        </creator>
+        <creator>
+            <creatorName>Bachtel, Juliet</creatorName>
+            <nameIdentifier schemeURI="http://orcid.org/" nameIdentifierScheme="ORCID">0000-0003-0003-2515</nameIdentifier>
+            <affiliation>National Center for Ecological Analysis and Synthesis</affiliation>
+        </creator>
+        <creator>
+            <creatorName>Randazzo, John</creatorName>
+            <affiliation>National Center for Ecological Analysis and Synthesis</affiliation>
+        </creator>
+        <creator>
+            <creatorName>Gavenus, Erika</creatorName>
+        </creator>
+    </creators>
+    <titles>
+        <title xml:lang="en">Critical Engineering Literacy Test (CELT)</title>
+    </titles>
+    <publisher>Purdue University Research Repository (PURR)</publisher>
+    <publicationYear>2013</publicationYear>
+    <subjects>
+        <subject xml:lang="en">Test</subject>
+    </subjects>
+    <language>en</language>
+    <resourceType resourceTypeGeneral="Dataset">Dataset</resourceType>
+    <version>1.0</version>
+    <descriptions>
+        <description xml:lang="en" descriptionType="Abstract">
+            This is a test abstract.
+        </description>
+    </descriptions>
+</resource>
