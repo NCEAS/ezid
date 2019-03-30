@@ -58,7 +58,7 @@ public class EZIDServiceTest  {
         ezid = new EZIDService();
         ezid.login(USERNAME, PASSWORD);
     }
-    
+
     @Test
     public void loginAndLogout() {
         EZIDService ezidLocal = null;
@@ -68,14 +68,14 @@ public class EZIDServiceTest  {
         } catch (EZIDException e) {
             fail("Login failed: " + e.getMessage());
         }
-        
+
         try {
             ezidLocal.logout();
         } catch (EZIDException e) {
             fail("Logout failed: " + e.getMessage());
         }
     }
-    
+
     @Test
     public void invalidLogin() {
         try {
@@ -86,7 +86,7 @@ public class EZIDServiceTest  {
             // Good -- login should have failed -- exception expected
         }
     }
-    
+
     @Test
     public void mint() {
         String testId = null;
@@ -95,18 +95,21 @@ public class EZIDServiceTest  {
             metadata.put(InternalProfile.TARGET.toString(), "http://example.com/ezidExample/");
             metadata.put(DataCiteProfile.TITLE.toString(), "Title of a test identified resource");
             testId = ezid.mintIdentifier(DOISHOULDER, metadata);
+            if (testId == null || testId.isEmpty()) {
+                fail("Mint returned null or empty id: " + testId);
+            }
         } catch (EZIDException e) {
             fail("Mint failed: " + e.getMessage());
         }
     }
-    
+
     @Test
     public void setAndGetMetadata() {
         String testId = null;
         String TITLEKEY = DublinCoreProfile.TITLE.toString();
         String TITLEVAL = "A Dublin Core resource title";
 
-        try {            
+        try {
             HashMap<String, String> metadata = generateMetadata("ToBeMinted");
             testId = ezid.mintIdentifier(DOISHOULDER, metadata);
             metadata.put(TITLEKEY, TITLEVAL);
@@ -114,7 +117,7 @@ public class EZIDServiceTest  {
         } catch (EZIDException e) {
             fail("SetMetadata failed: " + e.getMessage());
         }
-        
+
         try {
             HashMap<String, String> metadata = ezid.getMetadata(testId);
 			for (String key : metadata.keySet()) {
@@ -129,19 +132,22 @@ public class EZIDServiceTest  {
             fail("GetMetadata failed: " + e.getMessage());
         }
     }
-    
+
     @Test
     public void create() {
         String timestamp = generateTimeString();
         try {
             String identifier = DOISHOULDER + "/" + "TEST" + "/" + timestamp;
-            HashMap metadata = generateMetadata(identifier);
+            HashMap<String, String> metadata = generateMetadata(identifier);
             String newId = ezid.createIdentifier(identifier, metadata);
+            if (newId == null || newId.isEmpty()) {
+                fail("Create returned null or empty id: " + newId);
+            }
         } catch (EZIDException e) {
             fail("Create failed: " + e.getMessage());
         }
     }
-   
+
     @Test
     public void delete() {
         String timestamp = generateTimeString();

@@ -1,7 +1,6 @@
 package edu.ucsb.nceas.ezid.test;
 
 import java.util.HashMap;
-import java.util.Calendar;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
