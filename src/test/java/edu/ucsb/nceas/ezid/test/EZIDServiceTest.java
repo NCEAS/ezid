@@ -19,6 +19,12 @@
 
 package edu.ucsb.nceas.ezid.test;
 
+import java.net.URL;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import static org.junit.Assert.fail;
 
 import org.apache.commons.logging.Log;
@@ -52,6 +58,7 @@ public class EZIDServiceTest  {
     private static EZIDService ezid = null;
 
     protected static Log log = LogFactory.getLog(EZIDServiceTest.class);
+
 
     @Before
     public void setUp() throws EZIDException {
@@ -104,6 +111,34 @@ public class EZIDServiceTest  {
     }
 
     @Test
+    public void create() {
+        String timestamp = generateTimeString();
+        try {
+            String identifier = DOISHOULDER + "/" + "TEST" + "/" + timestamp;
+            HashMap<String, String> metadata = generateMetadata(identifier);
+            String newId = ezid.createIdentifier(identifier, metadata);
+            if (newId == null || newId.isEmpty()) {
+                fail("Create returned null or empty id: " + newId);
+            }
+        } catch (EZIDException e) {
+            fail("Create failed: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void delete() {
+        String timestamp = generateTimeString();
+        try {
+            HashMap<String, String> metadata = new HashMap<String, String>();
+            metadata.put(InternalProfile.STATUS.toString(), "reserved");
+            String newId = ezid.createIdentifier(ARKSHOULDER + "/" + "TEST" + "/" + timestamp, metadata);
+            ezid.deleteIdentifier(newId);
+        } catch (EZIDException e) {
+            fail("Delete failed: " + e.getMessage());
+        }
+    }
+
+    @Test
     public void setAndGetMetadata() {
         String testId = null;
         String TITLEKEY = DublinCoreProfile.TITLE.toString();
@@ -134,30 +169,29 @@ public class EZIDServiceTest  {
     }
 
     @Test
-    public void create() {
-        String timestamp = generateTimeString();
+    public void setAndGetDataCiteXML() {
+        String testId = null;
+
         try {
-            String identifier = DOISHOULDER + "/" + "TEST" + "/" + timestamp;
-            HashMap<String, String> metadata = generateMetadata(identifier);
-            String newId = ezid.createIdentifier(identifier, metadata);
-            if (newId == null || newId.isEmpty()) {
-                fail("Create returned null or empty id: " + newId);
+            HashMap<String, String> metadata = generateDataCiteXML("ToBeMinted");
+            testId = ezid.mintIdentifier(DOISHOULDER, metadata);
+            log.debug("SetAndGet: " + testId);
+        } catch (EZIDException e) {
+            fail("SetMetadata failed: " + e.getMessage());
+        }
+
+        try {
+            HashMap<String, String> metadata = ezid.getMetadata(testId);
+			for (String key : metadata.keySet()) {
+			    log.debug(key + ": " + metadata.get(key));
+			}
+            String xml = metadata.get("datacite");
+			log.debug("SetAndGet Datacite: " + xml);
+            if (xml == null || !xml.contains(testId.split("/")[1])) {
+                fail("GetMetadata failed: metadata does not contain submitted identifier.");
             }
         } catch (EZIDException e) {
-            fail("Create failed: " + e.getMessage());
-        }
-    }
-
-    @Test
-    public void delete() {
-        String timestamp = generateTimeString();
-        try {
-            HashMap<String, String> metadata = new HashMap<String, String>();
-            metadata.put(InternalProfile.STATUS.toString(), "reserved");
-            String newId = ezid.createIdentifier(ARKSHOULDER + "/" + "TEST" + "/" + timestamp, metadata);
-            ezid.deleteIdentifier(newId);
-        } catch (EZIDException e) {
-            fail("Delete failed: " + e.getMessage());
+            fail("GetMetadata failed: " + e.getMessage());
         }
     }
 
@@ -199,6 +233,29 @@ public class EZIDServiceTest  {
         metadata.put("datacite.publisher", publisher);
         String year = new Integer(Calendar.getInstance().get(Calendar.YEAR)).toString();
         metadata.put("datacite.publicationyear", year);
+        return metadata;
+    }
+
+    /**
+     * Generate DataCite compliant XML metadata for use in test data insertion.
+     */
+    public HashMap<String, String> generateDataCiteXML(String identifier) {
+        HashMap<String, String> metadata = new HashMap<String, String>();
+        try {
+            Path tempFile = null;
+            URL url = getClass().getResource("/datacite-3.1.xml");
+            if (url != null) {
+                tempFile = Paths.get(url.toURI());
+            } else {
+                fail("generateDataCiteXML failed: " + "Could not open datacite.xml resource.");
+            }
+            String xml = new String(Files.readAllBytes(tempFile));
+            metadata.put("datacite", xml);
+        } catch (URISyntaxException e) {
+            fail("generateDataCiteXML failed: " + e.getMessage());
+        } catch (IOException e) {
+            fail("generateDataCiteXML failed: " + e.getMessage());
+        }
         return metadata;
     }
 }
