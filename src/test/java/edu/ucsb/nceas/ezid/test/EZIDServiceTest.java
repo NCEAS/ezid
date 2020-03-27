@@ -155,11 +155,11 @@ public class EZIDServiceTest  {
 
         try {
             HashMap<String, String> metadata = ezid.getMetadata(testId);
-			for (String key : metadata.keySet()) {
-			    log.debug(key + ": " + metadata.get(key));
-			}
+            for (String key : metadata.keySet()) {
+                log.debug(key + ": " + metadata.get(key));
+            }
             String title = metadata.get(TITLEKEY);
-			log.debug("SetAndGet Title: " + title);
+            log.debug("SetAndGet Title: " + title);
             if (title == null || !title.equals(TITLEVAL)) {
                 fail("GetMetadata failed: Title does not match.");
             }
@@ -172,26 +172,30 @@ public class EZIDServiceTest  {
     public void setAndGetDataCiteXML() {
         String testId = null;
 
-        try {
-            HashMap<String, String> metadata = generateDataCiteXML("ToBeMinted");
-            testId = ezid.mintIdentifier(DOISHOULDER, metadata);
-            log.debug("SetAndGet: " + testId);
-        } catch (EZIDException e) {
-            fail("SetMetadata failed: " + e.getMessage());
-        }
+        String[] versions = {"3.1", "4.0"};
 
-        try {
-            HashMap<String, String> metadata = ezid.getMetadata(testId);
-			for (String key : metadata.keySet()) {
-			    log.debug(key + ": " + metadata.get(key));
-			}
-            String xml = metadata.get("datacite");
-			log.debug("SetAndGet Datacite: " + xml);
-            if (xml == null || !xml.contains(testId.split("/")[1])) {
-                fail("GetMetadata failed: metadata does not contain submitted identifier.");
+        for (String version : versions) {
+            try {
+                HashMap<String, String> metadata = generateDataCiteXML("ToBeMinted", version);
+                testId = ezid.mintIdentifier(DOISHOULDER, metadata);
+                log.debug("SetAndGet: " + testId);
+            } catch (EZIDException e) {
+                fail("SetMetadata failed: " + e.getMessage());
             }
-        } catch (EZIDException e) {
-            fail("GetMetadata failed: " + e.getMessage());
+
+            try {
+                HashMap<String, String> metadata = ezid.getMetadata(testId);
+                for (String key : metadata.keySet()) {
+                    log.debug(key + ": " + metadata.get(key));
+                }
+                String xml = metadata.get("datacite");
+                log.debug("SetAndGet Datacite: " + xml);
+                if (xml == null || !xml.contains(testId.split("/")[1])) {
+                    fail("GetMetadata failed: metadata does not contain submitted identifier.");
+                }
+            } catch (EZIDException e) {
+                fail("GetMetadata failed: " + e.getMessage());
+            }
         }
     }
 
@@ -231,19 +235,21 @@ public class EZIDServiceTest  {
         metadata.put("datacite.creator", creator);
         String publisher = "EZID Java Library";
         metadata.put("datacite.publisher", publisher);
-        String year = new Integer(Calendar.getInstance().get(Calendar.YEAR)).toString();
+        String year = Integer.valueOf(Calendar.getInstance().get(Calendar.YEAR)).toString();
         metadata.put("datacite.publicationyear", year);
         return metadata;
     }
 
     /**
-     * Generate DataCite compliant XML metadata for use in test data insertion.
+     * Generate DataCite compliant XML metadata for use in test data insertion. This
+     * test depends on a set of resource files on the classpath that are named according
+     * to the DataCite version, in the form "/datacite-4.0.xml".
      */
-    public HashMap<String, String> generateDataCiteXML(String identifier) {
+    public HashMap<String, String> generateDataCiteXML(String identifier, String version) {
         HashMap<String, String> metadata = new HashMap<String, String>();
         try {
             Path tempFile = null;
-            URL url = getClass().getResource("/datacite-3.1.xml");
+            URL url = getClass().getResource("/datacite-" + version + ".xml");
             if (url != null) {
                 tempFile = Paths.get(url.toURI());
             } else {

@@ -10,8 +10,42 @@ service and then managing identifiers.  Using the service requires an account
 with the EZID service.  For more information, see:
    http://ezid.cdlib.org/doc/apidoc.html
 
+Once you have added the library to your project classpath (see below), you can generate identifiers with EZID with simple Java calls.  Here's a simple example to mint a new identifier using a DataCite 4.0 compliant metadata file in the current directory:
+
+```java
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import edu.ucsb.nceas.ezid.EZIDService;
+import edu.ucsb.nceas.ezid.EZIDException;
+
+public class EZIDExample {
+    public static void main(String args[]) {
+        try {
+            String USERNAME = "apitest";
+            String PASSWORD = "apitest";
+            String DOISHOULDER = "doi:10.5072/FK2";
+
+            EZIDService ezid = new EZIDService();
+            ezid.login(USERNAME, PASSWORD);
+
+            HashMap<String, String> metadata = new HashMap<String, String>();
+            String xml = new String(Files.readAllBytes((Paths.get("datacite.xml"))));
+            metadata.put("datacite", xml);
+            String testId = ezid.mintIdentifier(DOISHOULDER, metadata);
+            System.out.println("Generated: " + testId);
+        } catch (EZIDException e) {
+            System.err.println("Identifier minting failed: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Reading DataCiteXML failed: " + e.getMessage());
+        }
+    }
+}
+```
+
 See the javadoc documentation for an overview of usage, as well as the
-EZIDServiceTest.java JUnit class for examples of usage.
+EZIDServiceTest.java JUnit class for more examples of usage.
 
 See the License section below and LICENSE.txt for the details of distributing this software.
 
@@ -45,7 +79,7 @@ this snippet should work:
     	<dependency>
     		<groupId>edu.ucsb.nceas</groupId>
 			<artifactId>ezid</artifactId>
-			<version>1.0.2</version>
+			<version>1.0.3</version>
 			<type>jar</type>
     	</dependency>
     </dependencies>
