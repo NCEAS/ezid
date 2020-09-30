@@ -20,7 +20,7 @@
   </scm>
   <organization>
   	<name>National Center for Ecological Analysis and Synthesis, UC Santa Barbara</name>
-  	<url>http://nceas.ucsb.edu</url>
+  	<url>https://nceas.ucsb.edu</url>
   </organization>
   <dependencies>
     <dependency>
