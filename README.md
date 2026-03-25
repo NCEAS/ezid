@@ -66,7 +66,7 @@ this snippet should work:
     <repositories>
         <repository>
             <id>dataone.org</id>
-            <url>http://dev-testing.dataone.org/maven</url>
+            <url>https://maven.dataone.org/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -79,7 +79,7 @@ this snippet should work:
     	<dependency>
     		<groupId>edu.ucsb.nceas</groupId>
 			<artifactId>ezid</artifactId>
-			<version>1.0.3</version>
+			<version>2.0.0-SNAPSHOT</version>
 			<type>jar</type>
     	</dependency>
     </dependencies>

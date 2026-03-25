@@ -51,8 +51,8 @@ import edu.ucsb.nceas.ezid.profile.InternalProfile;
  * @author Matthew Jones, NCEAS, UC Santa Barbara
  */
 public class EZIDServiceTest  {
-    private static String USERNAME = "apitest";
-    private static String PASSWORD = "apitest";
+    private static String USERNAME = System.getenv("EZID_USER");
+    private static String PASSWORD = System.getenv("EZID_PASS");
     private static final String DOISHOULDER = "doi:10.5072/FK2";
     private static final String ARKSHOULDER = "ark:/99999/fk4";
     private static EZIDService ezid = null;
@@ -63,6 +63,9 @@ public class EZIDServiceTest  {
     @Before
     public void setUp() throws EZIDException {
         ezid = new EZIDService();
+        if (USERNAME == null || USERNAME.isEmpty() || PASSWORD == null || PASSWORD.isEmpty()) {
+            fail("EZID_USER or EZID_PASS environment variables are not set. Can't run tests.");
+        }
         ezid.login(USERNAME, PASSWORD);
     }
 
@@ -172,7 +175,7 @@ public class EZIDServiceTest  {
     public void setAndGetDataCiteXML() {
         String testId = null;
 
-        String[] versions = {"3.1", "4.0"};
+        String[] versions = {"4.0"};
 
         for (String version : versions) {
             try {

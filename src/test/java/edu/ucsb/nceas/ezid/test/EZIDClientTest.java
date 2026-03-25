@@ -14,8 +14,8 @@ import edu.ucsb.nceas.ezid.EZIDClient;
 
 public class EZIDClientTest {
 
-    private static String USERNAME = "apitest";
-    private static String PASSWORD = "apitest";
+    private static String USERNAME = System.getenv("EZID_USER");
+    private static String PASSWORD = System.getenv("EZID_PASS");
     private static final String DOISHOULDER = "doi:10.5072/FK2";
 
     protected static Log log = LogFactory.getLog(EZIDClientTest.class);
@@ -26,6 +26,9 @@ public class EZIDClientTest {
         log.info("Testing asynchronous id creation with " + numTests + " tests. Please be patient...");
         EZIDClient client = new EZIDClient();
         assertNotNull(client);
+        if (USERNAME == null || USERNAME.isEmpty() || PASSWORD == null || PASSWORD.isEmpty()) {
+            fail("EZID_USER or EZID_PASS environment variables are not set. Can't run tests.");
+        }
         boolean success = client.login(USERNAME, PASSWORD);
         assertTrue(success);
         for (int i = 0; i < numTests; i ++) {
