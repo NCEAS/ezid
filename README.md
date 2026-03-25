@@ -79,7 +79,7 @@ this snippet should work:
     	<dependency>
     		<groupId>edu.ucsb.nceas</groupId>
 			<artifactId>ezid</artifactId>
-			<version>1.1.0-SNAPSHOT</version>
+			<version>1.0.3</version>
 			<type>jar</type>
     	</dependency>
     </dependencies>
@@ -96,6 +96,16 @@ and then run:
 
 which will create the jar file in the target directory. The jar file can then be
 included in applications that wish to access EZID.
+
+To successfully run the tests, you must first provide credentials for an EZID account, which
+will be used in the tests to create test DOIs at EZID (which will be deleted by EZID). The
+test DOIs are in a special reserved testing shoulder and will not affect your other ezid identifiers.
+
+```sh
+export EZID_USER=my-ezid-account
+export EZID_PASS=my-ezid-password
+mvn test
+```
 
 Contact us: knb-help@nceas.ucsb.edu
 
