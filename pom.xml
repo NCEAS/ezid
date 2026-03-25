@@ -24,11 +24,11 @@
   </organization>
   <dependencies>
     <dependency>
-        <groupId>org.apache.httpcomponents</groupId>
-        <artifactId>httpclient</artifactId>
-        <version>4.5.1</version>
-        <type>jar</type>
-        <scope>compile</scope>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpclient</artifactId>
+    	<version>4.5.14</version>
+    	<type>jar</type>
+    	<scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>junit</groupId>
