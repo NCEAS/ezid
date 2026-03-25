@@ -79,13 +79,26 @@ this snippet should work:
     	<dependency>
     		<groupId>edu.ucsb.nceas</groupId>
 			<artifactId>ezid</artifactId>
-			<version>1.0.3</version>
+			<version>1.1.0</version>
 			<type>jar</type>
     	</dependency>
     </dependencies>
 ```
 
 We plan to publish the ezid artifacts to Maven Central repositories, but have not gotten there yet.
+
+Java versions
+-------------
+
+Original versions of the `ezid` library were built and compiled against JDK 8, but more recent 
+now have shifted to compiling against JDK 17, 21, and 25. While releases could be compiled
+against different versions of Java, the builds at https://maven.dataone.org target the following versions:
+
+- EZID 1.1.0: Java 25
+- EZID 1.0.3: Java 8
+- EZID 1.0.2: Java 8
+- EZID 1.0.1: Java 8
+- EZID 1.0.0: Java 8
 
 Building the library
 --------------------
